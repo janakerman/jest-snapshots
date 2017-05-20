@@ -1,5 +1,6 @@
 import React from 'react'
 import { createRenderer } from 'react-test-renderer/shallow';
+import renderer from 'react-test-renderer';
 import Footer from './Footer'
 import { SHOW_ALL, SHOW_ACTIVE } from '../constants/TodoFilters'
 
@@ -12,9 +13,11 @@ const setup = propOverrides => {
     onShow: jest.fn()
   }, propOverrides)
 
-  const renderer = createRenderer()
-  renderer.render(<Footer {...props} />)
-  const output = renderer.getRenderOutput()
+  // const renderer = createRenderer()
+  // renderer.render(<Footer {...props} />)
+  // const output = renderer.getRenderOutput()
+
+  const output = renderer.create(<Footer {...props} />).toJSON()
 
   return {
     props: props,
@@ -35,66 +38,53 @@ const getTextContent = elem => {
 
 describe('components', () => {
   describe('Footer', () => {
-    it('should render container', () => {
+    
+    it('should render correctly', () => {
       const { output } = setup()
-      expect(output.type).toBe('footer')
-      expect(output.props.className).toBe('footer')
-    })
+      expect(output).toMatchSnapshot()
+    });
 
+    // Duplicate of the first test.
     it('should display active count when 0', () => {
       const { output } = setup({ activeCount: 0 })
-      const [ count ] = output.props.children
-      expect(getTextContent(count)).toBe('No items left')
+      expect(output).toMatchSnapshot()
     })
 
     it('should display active count when above 0', () => {
       const { output } = setup({ activeCount: 1 })
-      const [ count ] = output.props.children
-      expect(getTextContent(count)).toBe('1 item left')
+      expect(output).toMatchSnapshot()
     })
 
+    // Duplicate of the first test.
     it('should render filters', () => {
       const { output } = setup()
-      const [ , filters ] = output.props.children
-      expect(filters.type).toBe('ul')
-      expect(filters.props.className).toBe('filters')
-      expect(filters.props.children.length).toBe(3)
-      filters.props.children.forEach(function checkFilter(filter, i) {
-        expect(filter.type).toBe('li')
-        const a = filter.props.children
-        expect(a.props.className).toBe(i === 0 ? 'selected' : '')
-        expect(a.props.children).toBe({
-          0: 'All',
-          1: 'Active',
-          2: 'Completed'
-        }[i])
-      })
+      expect(output).toMatchSnapshot()
     })
 
+    // This can't be replaced by a snapshot as we're testing a callback is called.
     it('should call onShow when a filter is clicked', () => {
       const { output, props } = setup()
-      const [ , filters ] = output.props.children
-      const filterLink = filters.props.children[1].props.children
+      const [ , filters ] = output.children
+      const filterLink = filters.children[1].children[0]
       filterLink.props.onClick({})
       expect(props.onShow).toBeCalledWith(SHOW_ACTIVE)
     })
 
+    // Duplicate of test 1
     it('shouldnt show clear button when no completed todos', () => {
       const { output } = setup({ completedCount: 0 })
-      const [ , , clear ] = output.props.children
-      expect(clear).toBe(undefined)
+      expect(output).toMatchSnapshot()
     })
 
     it('should render clear button when completed todos', () => {
       const { output } = setup({ completedCount: 1 })
-      const [ , , clear ] = output.props.children
-      expect(clear.type).toBe('button')
-      expect(clear.props.children).toBe('Clear completed')
+      expect(output).toMatchSnapshot()
     })
 
+    // Can't use snapshot here as we're testing a callback
     it('should call onClearCompleted on clear button click', () => {
       const { output, props } = setup({ completedCount: 1 })
-      const [ , , clear ] = output.props.children
+      const [ , , clear ] = output.children
       clear.props.onClick({})
       expect(props.onClearCompleted).toBeCalled()
     })
