@@ -426,66 +426,6 @@ exports[`components Footer should select the completed link when completed filte
 </footer>
 `;
 
-exports[`components Footer should style correct selected filter 1`] = `
-<footer
-  className="footer"
->
-  <span
-    className="todo-count"
-  >
-    <strong>
-      No
-    </strong>
-     
-    items
-     left
-  </span>
-  <ul
-    className="filters"
-  >
-    <li>
-      <a
-        className=""
-        onClick={[Function]}
-        style={
-          Object {
-            "cursor": "pointer",
-          }
-        }
-      >
-        All
-      </a>
-    </li>
-    <li>
-      <a
-        className="selected"
-        onClick={[Function]}
-        style={
-          Object {
-            "cursor": "pointer",
-          }
-        }
-      >
-        Active
-      </a>
-    </li>
-    <li>
-      <a
-        className=""
-        onClick={[Function]}
-        style={
-          Object {
-            "cursor": "pointer",
-          }
-        }
-      >
-        Completed
-      </a>
-    </li>
-  </ul>
-</footer>
-`;
-
 exports[`components Footer shouldnt show clear button when no completed todos 1`] = `
 <footer
   className="footer"
