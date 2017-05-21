@@ -88,5 +88,11 @@ describe('components', () => {
       clear.props.onClick({})
       expect(props.onClearCompleted).toBeCalled()
     })
+
+    it('should style correct selected filter', () => {
+      const { output, props } = setup({ filter: SHOW_ACTIVE})
+      expect(output).toMatchSnapshot()
+    })
+
   })
 })
