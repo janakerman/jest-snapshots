@@ -2,7 +2,7 @@ import React from 'react'
 import { createRenderer } from 'react-test-renderer/shallow';
 import renderer from 'react-test-renderer';
 import Footer from './Footer'
-import { SHOW_ALL, SHOW_ACTIVE } from '../constants/TodoFilters'
+import { SHOW_ALL, SHOW_ACTIVE, SHOW_COMPLETED } from '../constants/TodoFilters'
 
 const setup = propOverrides => {
   const props = Object.assign({
@@ -89,8 +89,13 @@ describe('components', () => {
       expect(props.onClearCompleted).toBeCalled()
     })
 
-    it('should style correct selected filter', () => {
+    it('should select the active link when active filter', () => {
       const { output, props } = setup({ filter: SHOW_ACTIVE})
+      expect(output).toMatchSnapshot()
+    })
+
+    it('should select the completed link when completed filter', () => {
+      const { output, props } = setup({ filter: SHOW_COMPLETED})
       expect(output).toMatchSnapshot()
     })
 
